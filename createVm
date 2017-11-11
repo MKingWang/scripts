@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "create a new virtual pc"
-
 if [ $# -lt 1 ]
 then
 	echo "不告诉我虚拟机名字，我给你克隆到哪？"
