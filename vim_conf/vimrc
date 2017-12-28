@@ -1,0 +1,79 @@
+"设置成vi模式
+set nocompatible
+filetype off
+
+"配置vundle
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
+
+"向vundle中添加插件
+Plugin 'gmarik/Vundle.vim'
+Plugin 'fatih/vim-go'
+"Plugin 'bling/vim-airline'
+Bundle 'Valloric/YouCompleteMe'
+
+call vundle#end()
+filetype plugin indent on
+
+"airline配置
+""set laststatus=2
+""set t_Co=256 
+""let g:airline_powerline_fonts = 1
+""let g:airline#extensions#tabline#enabled = 0
+""let g:airline#extensions#tabline#buffer_nr_show = 1
+""if !exists('g:airline_symbols')
+""	  let g:airline_symbols = {}
+""endif
+""let g:airline_left_sep = ''
+""let g:airline_left_alt_sep = ''
+""let g:airline_right_sep = ''
+""let g:airline_right_alt_sep = ''
+""let g:airline_symbols.branch = ''
+""let g:airline_symbols.readonly = '⭤'
+""let g:airline_symbols.linenr = ''
+
+"F5编译运行
+map <F5> :call Run()<CR>
+func! Run()
+	exec "w"
+	if &filetype == 'c'
+		exec "!gcc % -o %<"
+		exec "!./%<"
+	elseif &filetype == 'go'
+		exec "!go run %"
+	elseif &filetype == 'sh'
+		exec "!bash %"
+	endif
+endfunc
+
+"F8调试程序
+map <F8> :call Debug()<CR>
+func! Debug()
+	exec "w"
+	if &filetype == 'c'
+		exec "!gcc % -g -o %<"
+		exec "!gdb ./%<"
+	elseif &filetype == 'go'
+		exec "!go build -gcflags '-N -l' %"
+		exec "!gdb ./%<"
+	elseif &filetype == 'sh'
+		exec "!bash -x %"
+	endif
+endfunc
+
+"自动补全
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap " ""<ESC>i
+:inoremap ' ''<ESC>i
+function! ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+	return "\<Right>"
+    else
+    	return a:char
+    endif
+endfunc
