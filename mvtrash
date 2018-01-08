@@ -1,3 +1,3 @@
 #!/bin/bash
-[ -d tmp/.trash ] || mkdir tmp/.trash
-mv $@ tmp/.trash
+[ -d /tmp/.trash ] || mkdir /tmp/.trash
+mv $@ /tmp/.trash
